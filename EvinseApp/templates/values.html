@@ -1,0 +1,51 @@
+<!-- display_values.html -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyword Data Values</title>
+    <style>
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #f4f4f4;
+        }
+        .no-data {
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Values for {{ cProjectName }}</h1>
+    
+    <table class="data-table">
+        <tr>
+            <th>Value</th>
+        {% if cDataValuesList %}
+            {% for item in cDataValuesList %}
+                {% comment %} <tr>
+                    <td>{{ item.value }}</td>
+                    <td> {% endcomment %}
+                        <th><a href="{% url 'store_value' item.id item.value cProjectName %}">{{ item.value }}</a></th>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="2" class="no-data">No data values found.</td>
+            </tr>
+        {% endif %}
+    </table>
+    
+    {% comment %} <p><a href="{% url 'keywords' cProjectName=cProjectName %}">Back to Selection</a></p> {% endcomment %}
+</body>
+</html>

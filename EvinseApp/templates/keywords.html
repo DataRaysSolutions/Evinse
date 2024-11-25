@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Roboto, sans-serif;
+            display: flex;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Ensures body takes full height */
+        }  
+        .sidebar {
+            width: 200px;
+            background-color: #d3e8f5;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            top: 0;
+            left: 0;
+            z-index: 1001; /* Ensure sidebar stays on top */
+        }
+        .sidebar h2 {
+            color: black;
+            font-size: 24px;
+            margin-top: 0;
+            text-align: center;
+        }
+        .sidebar a {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .sidebar a:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        } 
+        .sidebar .blue-link {
+            background-color: #1443c6; /* Blue background */
+        }
+        .sidebar .blue-link:hover {
+            background-color: #0d3ec6; /* Lighter blue on hover */
+            transform: scale(1.05); /* Slightly increase size on hover */
+        }  
+        .header {
+            width: 100vw; /* Full width to cover the screen */
+            background-color: #2980b9;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed; /* Fixes header to the top */
+            top: 0;
+            left: 200px; /* Aligns header next to sidebar */
+            z-index: 1000; /* Ensures it stays on top of other elements */
+            width: calc(100% - 200px); /* Adjust width to account for sidebar */
+        }
+        .header .dropdown {
+            background-color: white; /* Keep the background white */
+            color: black; /* Text color */
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 200px;
+            cursor: pointer;
+            border: 2px solid #2980b9; /* Bluish border */
+            transition: border-color 0.3s; /* Smooth transition for the border */
+            margin-left: auto; /* Aligns dropdown to the right */
+        }
+        .header .dropdown:hover {
+            border-color: #3498db; /* Darker blue border on hover */
+        }
+        .header .username {
+            font-size: 1.2em;
+            margin-right: 40px; /* Adjusted margin for profile logo */
+            display: flex;
+            align-items: center;
+        }
+        .header .profile-logo {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-left: 10px;
+            border: 2px solid #ecf0f1; /* Optional border around the profile image */
+        }
+        .header button {
+            background-color: #ecf0f1;
+            color: #34495e;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .header button:hover {
+            background-color: #bdc3c7;
+        } 
+        .signout-logo {
+            font-size: 1.5em; /* Adjust size as needed */
+            color: white; /* Match header color */
+            margin: 0 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .signout-logo:hover {
+            transform: scale(1.1);
+        }
+        .container {
+            width: 70%;  /* Adjust this percentage */
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            margin-top: 40px;
+            margin-left: 240px;
+            display: flex;
+            flex-direction: column;
+        }
+        .search-bar {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+        }
+        
+        .keywords-container,
+        .files-container,
+        .data-values-container {
+            width: 80%; /* Increase the width for larger containers */
+            background-color: #ffffff;
+            padding: 30px; /* Increase padding for more spacing inside the containers */
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow for emphasis */
+            margin-right: 20px;
+        }
+
+        .keywords-container h2,
+        .files-container h2 {
+            font-size: 1.5em; /* Increase font size for headers */
+            margin-bottom: 10px; /* Slightly more space below header */
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 8px 0; /* Increase margin between list items */
+        }
+
+        button {
+            padding: 10px 20px; /* Increase button size */
+            width: 10%; /* Make button a bit wider */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .keywords-and-files {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px; /* Add more space above the flex container */
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th, .data-table td {
+            padding: 5px; /* Increase padding for table cells */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #999;
+            font-size: 1.2em; /* Slightly larger font size for better readability */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>{{ cProjectName }}</h2>
+        <a href="{% url 'Home' %}" class="create-project-btn" style="background-color: #1443c6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 10px; text-align: center;">Create Project</a>
+        <a href="{% url 'ProjectCreation' %}" class="back-button" style="background-color: #1443c6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 10px; text-align: center;">My Projects</a>
+        <a href="{% url 'FileUpload' cProjectName %}" class="blue-link">File Upload</a>
+        <a href="{% url 'InsertKeywords' cProjectName %}" class="blue-link">Insert Keywords</a>
+        <a href="{% url 'Signout' %}">Sign Out</a>
+    </div>
+
+    <div class="header">
+        <!-- Project Dropdown -->
+        <select class="dropdown" onchange="window.location.href=this.value;">
+            <option value="#">Select Project</option>
+            {% for project in UserProjects %}
+                <option value="{% url 'FileUpload' project %}">{{ project }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Sign Out icon in the center -->
+        <a href="{% url 'Signout' %}" title="Sign Out">
+            <i class="fas fa-sign-out-alt signout-logo"></i>
+        </a>
+
+        <!-- Username and Profile Logo -->
+        <div class="username">
+            {% if cUserName %}
+                {{ cUserName }}
+            {% else %}
+                Welcome, Guest!
+            {% endif %}
+            <img src="https://www.gravatar.com/avatar/?d=mp&s=100" alt="Profile Logo" class="profile-logo">
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>Keywords and Files</h1>
+        
+
+<form method="post" action="">
+    {% csrf_token %}
+    
+    <div class="keywords-and-files">
+        <!-- Keywords container -->
+        <div class="keywords-container">
+            <h2>Keywords:</h2>
+            <input type="text" id="keyword-search" placeholder="Search Keywords" class="search-bar">
+            <ul id="keywords-list">
+                <input type="checkbox" class="select-all" onClick="toggle(this, 'keyword-checkbox')" /> All <br/>
+                {% for keyword in KeywordsList %}
+                    <li>
+                        <input type="checkbox" class="keyword-checkbox" 
+                               name="selected_keywords" 
+                               value="{{ keyword.id }}" 
+                               {% if keyword.id|stringformat:"s" in selected_keywords %}checked{% endif %}>
+                        {{ keyword.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <!-- File lists container -->
+        <div class="files-container">
+            <h2>Uploaded Files:</h2>
+            <input type="text" id="file-search" placeholder="Search Files" class="search-bar">
+            <ul id="files-list">
+                <input type="checkbox" class="select-all" onClick="toggle(this, 'pdf-checkbox')" /> All <br/>
+                {% for up in uploadedfile %}
+                    <li>
+                        <input type="checkbox" class="pdf-checkbox" 
+                               name="selected_data" 
+                               value="{{ up.id }}" 
+                               {% if up.id|stringformat:"s" in selected_files %}checked{% endif %}>
+                        {{ up.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>        
+    
+        <!-- Data Values container -->
+        <div class="data-values-container">
+            <h2>Data Values:</h2>
+            <table class="data-table">
+                <tr>
+                    <th>Value</th>
+                </tr>
+                {% if cDataValuesList %}
+                    {% for item in cDataValuesList %}
+                        <tr>
+                            <th>
+                                <a href="{% url 'store_value' item.id item.value cProjectName %}">
+                                    {{ item.value }}
+                                </a>
+                            </th>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="1" class="no-data">No data values found.</td>
+                    </tr>
+                {% endif %}
+            </table>
+        </div>
+        
+    </div>
+    
+        <button type="submit">Submit</button>
+    </div>
+    
+    <script>
+        function filterList(searchInputId, listId, itemClass) {
+            const searchInput = document.getElementById(searchInputId);
+            const filter = searchInput.value.toLowerCase();
+            const listItems = document.querySelectorAll(`#${listId} li`);
+            
+            listItems.forEach(item => {
+                const itemText = item.textContent || item.innerText;
+                if (itemText.toLowerCase().includes(filter)) {
+                    item.style.display = ''; // Show item
+                } else {
+                    item.style.display = 'none'; // Hide item
+                }
+            });
+        }
+
+        // Event listeners for the search input fields
+        document.getElementById('keyword-search').addEventListener('input', function() {
+            filterList('keyword-search', 'keywords-list', 'keyword-checkbox');
+        });
+
+        document.getElementById('file-search').addEventListener('input', function() {
+            filterList('file-search', 'files-list', 'pdf-checkbox');
+        });
+
+        function toggle(source, className) {
+            var checkboxes = document.getElementsByClassName(className);
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+    </script>
+</body>
+</html>

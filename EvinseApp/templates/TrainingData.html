@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Data Input</title>
+</head>
+<body>
+    <h1>Enter Training Data</h1>
+
+    <form method="post" action="{% url 'training_data' %}">
+        {% csrf_token %}
+
+        <label for="nKeywordID">Keyword ID:</label>
+        <input type="text" id="nKeywordID" name="nKeywordID" value="1"><br>
+
+        <label for="nFileNameID">File Name ID:</label>
+        <input type="text" id="nFileNameID" name="nFileNameID" value="2"><br>
+
+        <label for="nPageNumber">Page Number:</label>
+        <input type="text" id="nPageNumber" name="nPageNumber" value="3"><br>
+
+        <label for="nLineNumber">Line Number:</label>
+        <input type="text" id="nLineNumber" name="nLineNumber" value="1"><br>
+
+        <label for="cContentType">Content Type:</label>
+        <input type="text" id="cContentType" name="cContentType" value="paragraph"><br>
+
+        <label for="cSentence">Sentence:</label>
+        <input type="text" id="cSentence" name="cSentence" value="Example_sentence"><br>
+
+        <label for="cData">Data:</label>
+        <input type="text" id="cData" name="cData" value="Deficiency"><br>
+
+        <label for="cDataValue">Data Value:</label>
+        <input type="text" id="cDataValue" name="cDataValue" value="Vitamin_D_deficiency"><br>
+
+        <label for="cTableNumber">Table Number:</label>
+        <input type="text" id="cTableNumber" name="cTableNumber" value="N/A"><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+</body>
+</html>

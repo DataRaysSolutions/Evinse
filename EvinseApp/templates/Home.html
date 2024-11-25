@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Creation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Roboto, sans-serif;
+            display: flex;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Ensures body takes full height */
+        }  
+        .sidebar {
+            width: 200px;
+            background-color: #d3e8f5;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            top: 0;
+            left: 0;
+            z-index: 1001; /* Ensure sidebar stays on top */
+        }
+        .sidebar h2 {
+            color: black;
+            font-size: 24px;
+            margin-top: 0;
+            text-align: center;
+        }
+        .sidebar div {
+            background-color: #1443c6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin-top: 10px;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            transition: background-color 0.3s;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+        .sidebar div:hover {
+            background-color: #0d3ec6;
+            transform: scale(1.05);
+        }
+        .sidebar div:hover::after {
+            content: "Select a project";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            width: 160px;
+            transform: translateX(-50%);
+            background-color: white;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        .sidebar a {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .sidebar a:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }   
+        .header {
+            width: 100vw; /* Full width to cover the screen */
+            background-color: #2980b9;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed; /* Fixes header to the top */
+            top: 0;
+            left: 200px; /* Aligns header next to sidebar */
+            z-index: 1000; /* Ensures it stays on top of other elements */
+            width: calc(100% - 200px); /* Adjust width to account for sidebar */
+        }
+        .header .dropdown {
+            background-color: white; /* Keep the background white */
+            color: black; /* Text color */
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 200px;
+            cursor: pointer;
+            border: 2px solid #2980b9; /* Bluish border */
+            transition: border-color 0.3s; /* Smooth transition for the border */
+            margin-left: auto; /* Aligns dropdown to the right */
+        }
+        .header .dropdown:hover {
+            border-color: #3498db; /* Darker blue border on hover */
+        }
+        .header .username {
+            font-size: 1.2em;
+            margin-right: 40px; /* Adjusted margin for profile logo */
+            display: flex;
+            align-items: center;
+        }
+        .header .profile-logo {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-left: 10px;
+            border: 2px solid #ecf0f1; /* Optional border around the profile image */
+        }
+        .header button {
+            background-color: #ecf0f1;
+            color: #34495e;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .header button:hover {
+            background-color: #bdc3c7;
+        } 
+        .signout-logo {
+            font-size: 1.5em; /* Adjust size as needed */
+            color: white; /* Match header color */
+            margin: 0 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .signout-logo:hover {
+            transform: scale(1.1);
+        }
+        .main-content {
+            margin-left: 80px; /* Adjusted margin to accommodate the dashboard */
+            margin-right: 80px;
+            padding: 10px;
+            width: calc(100% - 80px); /* Full width minus dashboard */
+            margin-top: 60px; /* Space for header */
+            height: calc(100% - 60px); /* Full height minus header */
+        }
+        .greeting-container {
+            background-color: #91d2f3;
+            padding: 5px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .left-container, .right-container {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1; /* Ensures both containers take equal space */
+        }
+        .left-container {
+            background-color: #f1f1f1;
+            padding: 17px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Similar shadow */
+            flex: 1; /* Ensures it takes equal space */
+            margin-top: 50px;
+            margin-left: 150px;
+        }
+        .left-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Space between form elements */
+        }
+        .left-container label {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 0px;
+        }
+        .left-container input[type="text"],
+        .left-container textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .left-container input[type="text"]:focus,
+        .left-container textarea:focus {
+            border-color: #1685df;
+            outline: none;
+            box-shadow: 0 0 5px rgba(22, 133, 223, 0.5); /* Adds a slight glow when focused */
+        }
+        .left-container textarea {
+            resize: vertical; /* Allows vertical resizing */
+            min-height: 100px; /* Sets a minimum height for the text area */
+        }
+        .left-container button {
+            background-color: #1443c6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .left-container button:hover {
+            background-color: #0d3ec6;
+        }
+        .right-container {
+            background-color: #f1f1f1; /* Same as left-container */
+            padding: 17px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Similar shadow */
+            flex: 1; /* Ensures it takes equal space */
+            margin-top: 50px;
+        }
+        .right-container h2 {
+            font-size: 18px; /* Similar to other form titles */
+            margin-bottom: 2px;
+        }
+        .right-container form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+        .right-container label {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 0px;
+            display: block; /* Ensures labels stack on top of inputs */
+        }
+        .right-container input[type="text"] {
+            width: 100%;
+            padding: 9px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .right-container input[type="text"]:focus {
+            border-color: #1685df;
+            outline: none;
+            box-shadow: 0 0 5px rgba(22, 133, 223, 0.5); /* Adds a slight glow when focused */
+        }
+        /* Container for Population and Number of Iterations */
+        .right-container .inline-fields {
+            display: flex;
+            gap: 5px; /* Space between the two fields */
+            align-items: center;
+        }
+        .right-container .inline-fields label {
+            display: inline-block;
+            font-size: 16px; /* Ensures consistency with other labels */
+        }
+        .right-container .inline-fields input[type="text"] {
+            display: inline-block;
+            width: 100px; /* Set the width as needed */
+            padding: 9px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .objective-field {
+            display: flex;
+            align-items: center;
+        }
+        .objective-field input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .add-objective-btn {
+            background-color: #1443c6;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+        .add-objective-btn:hover {
+            background-color: #0d6efd;
+        }
+        .timeframe-container {
+            display: flex;
+            align-items: center; /* Vertically center the radio buttons and input */
+            gap: 15px; /* Space between radio buttons and the time points input */
+        }
+        .timeframe-container label {
+            margin: 0; /* Remove margin to prevent shifting */
+        }
+        .time-points-container {
+            display: flex;
+            align-items: center; /* Vertically center the label and input */
+            gap: 5px; /* Space between label and input */
+        }
+        .intervention-section {
+            height: 50px; /* Adjust height as necessary */
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            justify-content: space-between; /* Ensure even spacing */
+        }
+        .button-container {
+            display: flex;
+            gap: 15px; /* Space between the buttons */
+            justify-content: center; /* Centers both buttons */
+            margin-top: 20px; /* Adds space between form and buttons */
+        }
+        button[type="submit"] {
+            background-color: #1443c6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100px;
+            display: inline-block;
+        }
+        button[type="submit"]:hover {
+            background-color: #0d3ec6;
+        }
+        button[type="submit"]:active {
+            transform: scale(0.98);
+        }
+        button[type="submit"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(22, 133, 223, 0.5);
+        }
+        button[type="button"] {
+            background-color: #f0f0f0;
+            color: #1685df;
+            padding: 12px 24px;
+            border: 2px solid #1685df;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100px;
+            display: inline-block;
+        }
+        button[type="button"]:hover {
+            background-color: #e0e0e0;
+        }
+        button[type="button"]:active {
+            transform: scale(0.98);
+        }
+        button[type="button"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(22, 133, 223, 0.5);
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 5px; /* Space between checkbox and label */
+        }
+        .checkbox-container label {
+            margin-right: 20px; /* Space between labels */
+        }
+        .alert-container {
+            width: 40%;
+            margin-left: 150px;
+        }
+        .alert {
+            color: white;
+            background-color: red;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .inline-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 1px; /* Adjust spacing between checkbox and label */
+    }
+    .checkbox-group {
+        display: flex;
+        flex-wrap: wrap; /* Allows wrapping if there are many options */
+        gap: 10px; /* Adjust spacing between options */
+    }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+
+        <div class="sidebar">
+            <h2>EVINSE</h2>
+            <a href="{% url 'Home' %}" class="create-project-btn" style="background-color: #1443c6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 10px; text-align: center;">Create Project</a>
+            <a href="{% url 'ProjectCreation' %}" class="back-button" style="background-color: #1443c6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 10px; text-align: center;">My Projects</a>
+            <div>File Upload</div>
+            <div>Insert Keywords</div>
+            <a href="{% url 'Signout' %}">Sign Out</a>
+        </div>
+
+        <div class="header">
+            <!-- Project Dropdown -->
+            <select class="dropdown" onchange="window.location.href=this.value;">
+                <option value="#">Select Project</option>
+                {% for project in UserProjects %}
+                    <option value="{% url 'ProjectCreation' %}">{{ project }}</option>
+                {% endfor %}
+            </select>
+    
+            <!-- Sign Out icon in the center -->
+            <a href="{% url 'Signout' %}" title="Sign Out">
+                <i class="fas fa-sign-out-alt signout-logo"></i>
+            </a>
+    
+            <!-- Username and Profile Logo -->
+            <div class="username">
+                {% if cUserName %}
+                    {{ cUserName }}
+                {% else %}
+                    Welcome, Guest!
+                {% endif %}
+                <img src="https://www.gravatar.com/avatar/?d=mp&s=100" alt="Profile Logo" class="profile-logo">
+            </div>
+        </div>
+
+        {% if messages %}
+            <div class="alert-container">
+                {% for message in messages %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form action="{% url 'Home' %}" method="POST">
+            {% csrf_token %}
+            <div class="content-wrapper">
+                <div class="left-container">
+                    <label for="title">Project Title:</label>
+                    <input type="text" id="title" name="title" required autocomplete="off" value="{{ form_data.title|default:'' }}">
+        
+                    <label for="short-title">Short Title:</label>
+                    <input type="text" id="short-title" name="short-title" required autocomplete="off" value="{{ form_data.short_title|default:'' }}">
+        
+                    <label for="objective">Objective:</label>
+                    <div id="objective-container">
+                        <div class="objective-field">
+                            <input type="text" id="objective" name="objective1" placeholder="Objective 1" required autocomplete="off" value="{{ form_data.objective1|default:'' }}">
+                            <button id="add-objective-btn" class="add-objective-btn">+</button>
+                        </div>
+                    </div>
+                    <div class="inline-fields">
+                        <label for="nPopulation">Population:</label>
+                        <input type="text" id="nPopulation" name="nPopulation" required autocomplete="off" value="{{ form_data.nPopulation|default:'' }}" style="width: 100px;">
+                    </div><br>
+        
+                    <!-- Start Date and End Date Fields Inline -->
+                    <label for="start-date">Start Date:</label>
+                    <input type="date" id="start-date" name="start-date" required autocomplete="off" value="{{ form_data.start_date|default:'' }}" style="display: inline-block; margin-right: 55px;">
+                    
+                    <label for="end-date">End Date:</label>
+                    <input type="date" id="end-date" name="end-date" required autocomplete="off" value="{{ form_data.end_date|default:'' }}" style="display: inline-block;">
+                </div>
+                
+                <div class="right-container">
+                    <label for="cIntervention">Intervention:</label>
+                    <input type="text" id="cIntervention" name="cIntervention" required autocomplete="off" value="{{ form_data.cIntervention|default:'' }}"><br><br>
+                
+                    <label for="cComparator">Comparator:</label>
+                    <input type="text" id="cComparator" name="cComparator" required autocomplete="off" value="{{ form_data.cComparator|default:'' }}"><br><br>
+                
+                    <label>Dispersion:</label>
+                    <div class="checkbox-group">
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="dispersion_sd" name="dispersion_options" value="SD">
+                            <label for="dispersion_sd">SD</label>
+                        </div>
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="dispersion_se" name="dispersion_options" value="SE">
+                            <label for="dispersion_se">SE</label>
+                        </div>
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="dispersion_95ci" name="dispersion_options" value="95% CI">
+                            <label for="dispersion_95ci">95% CI</label>
+                        </div>
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="dispersion_pvalue" name="dispersion_options" value="P Value">
+                            <label for="dispersion_pvalue">P Value</label>
+                        </div>
+                    </div><br>
+
+                    <label for="cOutcome">Outcome:</label>
+                    <input type="text" id="cOutcome" name="cOutcome" required autocomplete="off" value="{{ form_data.cOutcome|default:'' }}"><br><br>
+                
+                    <div class="checkbox-group">
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="outcome_Prevalence" name="outcome_options" value="Prevalence">
+                            <label for="outcome_Prevalence">Prevalence</label>
+                        </div>
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="outcome_Incidence" name="outcome_options" value="Incidence">
+                            <label for="outcome_Incidence">Incidence</label>
+                        </div>
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="outcome_OddsRatio" name="outcome_options" value="Odds Ratio">
+                            <label for="outcome_OddsRatio">Odds Ratio</label>
+                        </div>
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="outcome_RelativeRisk" name="outcome_options" value="Relative Risk">
+                            <label for="outcome_RelativeRisk">Relative Risk</label>
+                        </div>
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="outcome_CorrelationCoefficient" name="outcome_options" value="Correlation Coefficient">
+                            <label for="outcome_CorrelationCoefficient">Correlation Coefficient</label>
+                        </div>
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="outcome_MeanChange" name="outcome_options" value="Mean Change">
+                            <label for="outcome_MeanChange">Mean Change</label>
+                        </div>
+                        <div class="inline-checkbox">
+                            <input type="checkbox" id="outcome_HazardRatio" name="outcome_options" value="Hazard Ratio">
+                            <label for="outcome_HazardRatio">Hazard Ratio</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div class="button-container">
+                <button type="submit">Submit</button>
+                <a href="{% url 'ProjectCreation' %}">
+                    <button type="button">Back</button>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're in edit mode
+            const urlParams = new URLSearchParams(window.location.search);
+            const editMode = urlParams.get('edit') === 'true';
+
+            if (editMode) {
+                const projectData = JSON.parse(decodeURIComponent(urlParams.get('project')));
+
+                // Fill in the form fields
+                document.getElementById('title').value = projectData.title;
+                document.getElementById('short-title').value = projectData.shortTitle;
+                document.getElementById('nProjectionYears').value = projectData.projectionYears;
+                document.getElementById('nPopulation').value = projectData.population;
+                document.getElementById('cComparator').value = projectData.comparator;
+                document.getElementById('cOutcome').value = projectData.outcome;
+
+                // Helper function to parse date from dd-MMM-yyyy or yyyy-MM-dd
+                const parseDate = (dateStr) => {
+                    if (dateStr.includes('-')) {
+                        const [day, monthAbbr, year] = dateStr.split('-');
+                        const monthMap = {
+                            'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06',
+                            'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
+                        };
+                        const month = monthMap[monthAbbr];
+                        return `${year}-${month}-${day.padStart(2, '0')}`;
+                    } else {
+                        return dateStr; // Assume it's already in YYYY-MM-DD format
+                    }
+                };
+
+                document.getElementById('start-date').value = parseDate(projectData.startDate);
+                document.getElementById('end-date').value = parseDate(projectData.endDate);
+
+                // Handle objectives
+                const objectiveContainer = document.getElementById('objective-container');
+                objectiveContainer.innerHTML = ''; // Clear existing objectives
+                let objectiveCount = projectData.objectives.length;
+
+                projectData.objectives.forEach((objective, index) => {
+                    const objectiveDiv = document.createElement('div');
+                    objectiveDiv.className = 'objective-field';
+
+                    // Add delete button for objectives 2 and 3, plus button for first objective
+                    let buttonHtml = '';
+                    if (index === 0) {
+                        buttonHtml = '<button id="add-objective-btn" class="add-objective-btn">+</button>';
+                    } else {
+                        buttonHtml = `
+                            <button type="button" class="delete-objective-btn" 
+                                    style="background-color: #f1f1f1; color: red; font-size: 15px; border: none; cursor: pointer;">
+                                Delete
+                            </button>`;
+                    }
+
+                    objectiveDiv.innerHTML = `
+                        <input type="text" name="objective${index + 1}" 
+                            placeholder="Objective ${index + 1}" 
+                            value="${objective}" required autocomplete="off">
+                        ${buttonHtml}
+                    `;
+                    objectiveContainer.appendChild(objectiveDiv);
+
+                    // Add delete button event listener for objectives 2 and 3
+                    if (index > 0) {
+                        const deleteButton = objectiveDiv.querySelector(".delete-objective-btn");
+                        deleteButton.addEventListener("click", function() {
+                            objectiveContainer.removeChild(objectiveDiv);
+                            objectiveCount--;
+                        });
+                    }
+                });
+
+                // Update form action to indicate edit mode with project identifier (title or ID)
+                const form = document.querySelector('form');
+                form.action = `${form.action}?edit=true&original_project=${encodeURIComponent(projectData.title)}`;
+                
+                // Set form method to POST to ensure the data is sent correctly
+                form.method = 'POST';
+            }
+
+            // Select all alert messages
+            const alerts = document.querySelectorAll('.alert-container .alert');
+    
+            // Set a timeout to remove each alert after 3 seconds
+            setTimeout(function() {
+                alerts.forEach(function(alert) {
+                    alert.style.display = 'none';
+                });
+            }, 3000);
+    
+            // Objectives handling for add button
+            const addObjectiveButton = document.getElementById("add-objective-btn");
+            const objectiveContainer = document.getElementById("objective-container");
+            let objectiveCount = document.querySelectorAll('.objective-field').length; // Get current count
+    
+            if (addObjectiveButton) {
+                addObjectiveButton.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    if (objectiveCount < 3) {
+                        const newObjective = document.createElement("div");
+                        newObjective.className = "objective-field";
+                        newObjective.innerHTML = `
+                            <input type="text" name="objective${objectiveCount + 1}" 
+                                   placeholder="Objective ${objectiveCount + 1}" 
+                                   required autocomplete="off">
+                            <button type="button" class="delete-objective-btn" 
+                                    style="background-color: #f1f1f1; color: red; font-size: 15px; border: none; cursor: pointer;">
+                                Delete
+                            </button>
+                        `;
+                        objectiveContainer.appendChild(newObjective);
+                        objectiveCount++;
+    
+                        // Add event listener for the delete button
+                        const deleteButton = newObjective.querySelector(".delete-objective-btn");
+                        deleteButton.addEventListener("click", function() {
+                            objectiveContainer.removeChild(newObjective);
+                            objectiveCount--;
+                        });
+                    } else {
+                        alert("You can only add up to 3 objectives.");
+                    }
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>

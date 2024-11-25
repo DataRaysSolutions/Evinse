@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Insert Keywords</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #d3e8f5;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            top: 0;
+            left: 0;
+            z-index: 1001; /* Ensure sidebar stays on top */
+        }
+        .sidebar h2 {
+            color: black;
+            font-size: 24px;
+            margin-top: 0;
+            text-align: center;
+        }
+        .sidebar a {
+            display: inline-block;
+            background-color: #e74c3c; /* Red background */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .sidebar a:hover {
+            background-color: #c0392b; /* Darker red on hover */
+            transform: scale(1.05); /* Slightly increase size on hover */
+            text-decoration: none;
+        }
+        .sidebar .back-button {
+            background-color: #1443c6; /* Dark blue background */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .sidebar .back-button:hover {
+            background-color: #0d3ec6; /* Darker blue on hover */
+            transform: scale(1.05);
+        }
+        .header {
+            width: 100vw; /* Full width to cover the screen */
+            background-color: #2980b9;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed; /* Fixes header to the top */
+            top: 0;
+            left: 200px; /* Aligns header next to sidebar */
+            z-index: 1000; /* Ensures it stays on top of other elements */
+            width: calc(100% - 200px); /* Adjust width to account for sidebar */
+        }
+        .header .dropdown {
+            background-color: white; /* Keep the background white */
+            color: black; /* Text color */
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 200px;
+            cursor: pointer;
+            border: 2px solid #2980b9; /* Bluish border */
+            transition: border-color 0.3s; /* Smooth transition for the border */
+            margin-left: auto; /* Aligns dropdown to the right */
+        }
+        .header .dropdown:hover {
+            border-color: #3498db; /* Darker blue border on hover */
+        }
+        .header .username {
+            font-size: 1.2em;
+            margin-right: 40px; /* Adjusted margin for profile logo */
+            display: flex;
+            align-items: center;
+        }
+        .header .profile-logo {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-left: 10px;
+            border: 2px solid #ecf0f1; /* Optional border around the profile image */
+        }
+        .header button {
+            background-color: #ecf0f1;
+            color: #34495e;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .header button:hover {
+            background-color: #bdc3c7;
+        }
+        .signout-logo {
+            font-size: 1.5em; /* Adjust size as needed */
+            color: white; /* Match header color */
+            margin: 0 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .signout-logo:hover {
+            transform: scale(1.1);
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-top: 120px; /* Reduced top margin to reduce the gap */
+            margin-left: 240px; /* Adjust left margin for sidebar space */
+            margin-bottom: 10px; /* Maintain the bottom margin for separation */
+        }
+        form {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+        button {
+            background-color: #1443c6;
+            color: #fff;
+            border: none;
+            padding: 9px 18px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #0d3ec6;
+            transform: scale(1.05);
+        }
+        button:active {
+            background-color: #1c6fa4;
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark backdrop */
+            z-index: 2000;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 10% auto;
+            position: relative;
+            font-family: 'Roboto', sans-serif;
+            color: #34495e;
+            max-height: 80vh; /* Limit the height of the modal to 80% of the viewport height */
+            overflow-y: auto; /* Adds vertical scrollbar if content overflows */
+        }
+        .keywords-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .keywords-table th, .keywords-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .keywords-table th {
+            background-color: #2980b9;
+            color: white;
+            font-weight: bold;
+        }
+        .keywords-table td {
+            font-size: 1.1em;
+        }
+        .keywords-table a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .keywords-table a:hover {
+            color: #2980b9;
+        }
+        .modal-content .close {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #34495e;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-content .close:hover {
+            color: #2980b9;
+        }
+        .modal-content p {
+            font-size: 1.1em;
+            color: #7f8c8d;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #searchBar {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            border: 1px solid #ecf0f1;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="sidebar">
+        <h2>{{ cProjectName }}</h2>
+        <a href="{% url 'Home' %}" class="back-button">Create Project</a>
+        <a href="{% url 'ProjectCreation' %}" class="back-button">My Projects</a>
+        <a href="{% url 'FileUpload' cProjectName %}" class="back-button">File Upload</a>
+        <a href="{% url 'InsertKeywords' cProjectName %}" class="back-button">Insert Keywords</a>
+        <a href="{% url 'Signout' %}">Sign Out</a>
+    </div>
+
+    <div class="header">
+        <select class="dropdown" onchange="window.location.href=this.value;">
+            <option value="#">Select Project</option>
+            {% for project in UserProjects %}
+                <option value="{% url 'InsertKeywords' project %}">{{ project }}</option>
+            {% endfor %}
+        </select>
+
+        <a href="{% url 'Signout' %}" title="Sign Out">
+            <i class="fas fa-sign-out-alt signout-logo"></i>
+        </a>
+
+        <div class="username">
+            {% if cUserName %}
+                {{ cUserName }}
+            {% else %}
+                Welcome, Guest!
+            {% endif %}
+            <img src="https://www.gravatar.com/avatar/?d=mp&s=100" alt="Profile Logo" class="profile-logo">
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>Insert Keywords</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            <label for="cKeywords">Keywords:</label>
+            <input type="text" id="cKeywords" name="cKeywords" autocomplete="off" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- New button to view keywords -->
+        <button onclick="openModal()">View Keywords</button>
+        <a href="{% url 'filekeyword' cProjectName %}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 5px;">
+            Extracted Values
+        </a>
+
+        {% if messages %}
+            <div style="color: red; font-size: 1.1em; margin-top: 10px;">
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal (popup) containing keywords -->
+    <div id="keywordsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Keywords:</h2>
+            <!-- Search bar to filter keywords -->
+            <input type="text" id="searchBar" placeholder="Search for keywords..." onkeyup="filterKeywords()">
+            
+            {% if KeywordsList %}
+                <table class="keywords-table" id="keywordsTable">
+                    <thead>
+                        <tr>
+                            <th>Keyword</th>
+                            <th>State</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for keyword in KeywordsList %}
+                            <tr class="keyword-row">
+                                <td>{{ keyword.name }}</td>
+                                <td>
+                                    {% if keyword.state == 1 %}
+                                        Active
+                                    {% else %}
+                                        Inactive
+                                    {% endif %}
+                                </td>
+                                <td><a href="{% url 'EditKeywordState' keyword_id=keyword.id cProjectName=cProjectName %}">Edit</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No keywords found for this project.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+
+    <script>
+        function filterKeywords() {
+            var input = document.getElementById('searchBar');  // Get the search bar element
+            var filter = input.value.toLowerCase();  // Get the search input value, converted to lowercase
+            var table = document.getElementById('keywordsTable');  // Get the table
+            var rows = table.getElementsByTagName('tr');  // Get all rows in the table
+
+            // Loop through all table rows (except the first row with headers)
+            for (var i = 1; i < rows.length; i++) {
+                var row = rows[i];
+                var cell = row.getElementsByTagName('td')[0];  // Get the first column (Keyword)
+            
+                if (cell) {
+                    var textValue = cell.textContent || cell.innerText;  // Get the text content of the keyword column
+                    if (textValue.toLowerCase().indexOf(filter) > -1) {
+                        row.style.display = "";  // Show the row if it matches the filter
+                    } else {
+                        row.style.display = "none";  // Hide the row if it doesn't match
+                    }
+                }
+            }
+        }
+
+        // Function to open the modal
+        function openModal() {
+            document.getElementById('keywordsModal').style.display = 'block';
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('keywordsModal').style.display = 'none';
+        }
+
+        // Close modal if the user clicks anywhere outside of the modal content
+        window.onclick = function(event) {
+            var modal = document.getElementById('keywordsModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

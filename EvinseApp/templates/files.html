@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Files</title>
+</head>
+<body>
+    <h1>Files for Project: {{ cProjectName }}</h1>
+
+    {% comment %} {% if files %}
+        <ul>
+            {% for file in files %}
+                <li>{{ file }}</li> <!-- Accessing the first element of the tuple (cFileName) -->
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No files found for this project.</p>
+    {% endif %}
+
+    {% for file in files %}
+    <div>
+        <a href="{{ file.file_path }}" target="_blank">{{ file.file_name }}</a>
+    </div>
+{% endfor %} {% endcomment %}
+
+  {% comment %} {% if KeywordsList %}
+   <ul>  
+        {% for keyword in KeywordsList %}
+            <li>{{keyword}}</li>
+        {% endfor %}
+           {% else %}
+        <p>No files keyword for this project.</p>
+    {% endif %}   
+   </ul> {% endcomment %}
+</body> 
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Creation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #d3e8f5;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            top: 0;
+            left: 0;
+            z-index: 1001; /* Ensure sidebar stays on top */
+        }
+        .sidebar h2 {
+            color: black;
+            font-size: 24px;
+            margin-top: 0;
+            text-align: center;
+        }
+        .sidebar div {
+            background-color: #1443c6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin-top: 10px;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            transition: background-color 0.3s;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+        .sidebar div:hover {
+            background-color: #0d3ec6;
+            transform: scale(1.05);
+        }
+        .sidebar div:hover::after {
+            content: "Select a project";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            width: 160px;
+            transform: translateX(-50%);
+            background-color: white;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        .sidebar a {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .sidebar a:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+        .header {
+            width: 100vw; /* Full width to cover the screen */
+            background-color: #2980b9;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed; /* Fixes header to the top */
+            top: 0;
+            left: 200px; /* Aligns header next to sidebar */
+            z-index: 1000; /* Ensures it stays on top of other elements */
+            width: calc(100% - 200px); /* Adjust width to account for sidebar */
+        }
+        .header .dropdown {
+            background-color: white; /* Keep the background white */
+            color: black; /* Text color */
+            padding: 5px 15px;
+            border-radius: 5px;
+            width: 200px;
+            font-size: 1em;
+            cursor: pointer;
+            border: 2px solid #2980b9; /* Bluish border */
+            transition: border-color 0.3s; /* Smooth transition for the border */
+            margin-left: auto; /* Aligns dropdown to the right */
+        }
+        .header .dropdown:hover {
+            border-color: #3498db; /* Darker blue border on hover */
+        }
+        .header .username {
+            font-size: 1.2em;
+            margin-right: 40px; /* Adjusted margin for profile logo */
+            display: flex;
+            align-items: center;
+        }
+        .header .profile-logo {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-left: 10px;
+            border: 2px solid #ecf0f1; /* Optional border around the profile image */
+        }
+        .header button {
+            background-color: #ecf0f1;
+            color: #34495e;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .header button:hover {
+            background-color: #bdc3c7;
+        }
+        .content {
+            margin-left: 260px;
+            padding: 100px 40px 40px; /* Extra padding on top to avoid overlap with header */
+            width: calc(100% - 260px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            position: relative;
+        }
+        .signout-logo {
+            font-size: 1.5em; /* Adjust size as needed */
+            color: white; /* Match header color */
+            margin: 0 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .signout-logo:hover {
+            transform: scale(1.1);
+        }
+        .content {
+            margin-left: 260px;
+            padding: 100px 40px 40px;
+            width: calc(100% - 260px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .project-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+        }
+        .project-container {
+            background: linear-gradient(145deg, #f3f8ff, #e1e9f5);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            width: calc(33.333% - 40px);
+            min-width: 250px;
+            max-width: 300px;
+            margin: 10px 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: left; /* Align text to the left */
+        }
+        .project-container h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #1443c6;
+            font-size: 1.6em;
+            text-align: left; /* Ensure heading is also left-aligned */
+            font-weight: 600;
+        }
+        .project-container p, .project-container ul {
+            font-size: 1em;
+            color: #333;
+            margin: 8px 0;
+            text-align: left; /* Ensure all text elements are left-aligned */
+        }
+        .project-container p strong {
+            display: inline-block;
+            width: 150px; /* Add a fixed width to align all labels */
+            color: #2980b9;
+        }
+        .project-container ul {
+            padding-left: 20px;
+            list-style-position: inside; /* Align list items with other text */
+        }
+        .edit-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #1443c6;
+            border-radius: 15px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+        .edit-btn:hover {
+            background-color: #0d3ec6;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Section -->
+    <div class="sidebar">
+        <h2>EVINSE</h2>
+        <a href="{% url 'Home' %}" class="create-project-btn" style="background-color: #1443c6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 10px; text-align: center;">Create Project</a>
+        <a href="{% url 'ProjectCreation' %}" class="back-button" style="background-color: #1443c6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 10px; text-align: center;">My Projects</a>
+        <div>File Upload</div>
+        <div>Insert Keywords</div>
+        <a href="{% url 'Signout' %}">Sign Out</a>
+    </div>
+    <!-- Header section with Sign Out button as icon, dropdown, username, and profile logo -->
+    <div class="header">
+        <!-- Project Dropdown -->
+        <select class="dropdown" onchange="window.location.href=this.value;">
+            <option value="#">Select Project</option>
+            {% for project in UserProjects %}
+                <option value="{% url 'FileUpload' project %}">{{ project }}</option>
+            {% endfor %}
+        </select>
+        <!-- Sign Out icon in the center -->
+        <a href="{% url 'Signout' %}" title="Sign Out">
+            <i class="fas fa-sign-out-alt signout-logo"></i>
+        </a>
+        <!-- Username and Profile Logo -->
+        <div class="username">
+            {% if cUserName %}
+                {{ cUserName }}
+            {% else %}
+                Welcome, Guest!
+            {% endif %}
+            <img src="https://www.gravatar.com/avatar/?d=mp&s=100" alt="Profile Logo" class="profile-logo">
+        </div>
+    </div>
+    <!-- Content area -->
+    <div class="content">
+        {% if UserProjects %}
+        <table style="width: 40%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #2980b9; color: white; text-align: left;">
+                    <th style="padding: 10px; border: 1px solid #ddd;">Project Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in UserProjects %}
+                <tr style="background-color: #f9f9f9; text-align: left;">
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ project }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No projects found. Please create a new project!</p>
+        {% endif %}
+    </div>
+    
+</body>
+</html>
