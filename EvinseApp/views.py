@@ -354,7 +354,6 @@ def InsertKeywords(request, cProjectName):
 
         except Exception as e:
             print(f"Database error: {e}")
-            # messages.error(request, 'There was an error inserting the keywords. Please try again.')
 
     # Fetch existing keywords (ensure you include nKeywordID and nState)
     KeywordsList = []
@@ -372,10 +371,6 @@ def InsertKeywords(request, cProjectName):
             for kw in KeywordsList:
                 keyword_ids.append(kw[0])
                 keyword_names.append(kw[1])
-            # print(keyword_ids, "Keyword IDs")  # Print the list of IDs
-            # print(keyword_names, "Keyword Names")  # Print the list of names 
-            # keywordss=read_keywords_and_ids(keyword_ids,keyword_names)
-            # Store keyword IDs and names in session for later use
             request.session['keyword_ids'] = keyword_ids
             request.session['keyword_names'] = keyword_names
             file_list = request.session.get('file_list', [])
@@ -389,8 +384,6 @@ def InsertKeywords(request, cProjectName):
             print(dataframe,"dataframe")
             insert_extracted_data_into_db(dataframe, nUserID,cProjectName)
             
-            
-            # print(request.session['keyword_ids'],"keywordidsssssssssssssssssssss")
     except Exception as e:
         print(f"Database error: {e}")
     # Pass the keyword ID and state along with the keyword name
@@ -485,7 +478,7 @@ def EditKeywordState(request, keyword_id, cProjectName):
         'cUserName': cUserName,
     })
 
-# old 
+
 
 
 def FileUpload(request, cProjectName):
@@ -610,8 +603,6 @@ def FileUpload(request, cProjectName):
                 continue  # Skip if it's a string rather than a file object
             file_name = UploadedFile.name
             file_size_bytes = UploadedFile.size  # Get the file size in bytes
-            # file_size = convert_size(file_size_bytes)  # Convert size to human-readable format
-            
             _,cExtention = os.path.splitext(file_name)
 
             # Check for duplicate file in the database
@@ -678,9 +669,8 @@ def FileUpload(request, cProjectName):
             project_id = cursor.fetchone()
             if not project_id:
                 messages.error(request, 'Project not found.')
-                # return redirect('ProjectCreation')
 
-           # Fetch the files for the project
+        # Fetch the files for the project
             cursor.execute("""
                 SELECT cFileName, nFileID
                 FROM ProjectFiles
@@ -709,13 +699,8 @@ def FileUpload(request, cProjectName):
             request.session['ProjectFolder'] = ProjectFolder
             print(ProjectFolder,"ProjectFolder")
             dir=get_pdf_directory(ProjectFolder)
-            print(dir,"dirrrrr")
-            # print(request.session['ProjectFolder'],"ProjectFolderProjectFolder")
             
             file_ids = []
-            # file_list = request.session.get('file_list', [])
-            # file_ids = request.session.get('file_ids', [])
-            # Loop through the files and append file name and path
             for file in files:
                 file_name = file[0]
                 file_path = os.path.join(ProjectFolder, file_name)  # Construct the full file path
@@ -729,16 +714,8 @@ def FileUpload(request, cProjectName):
                     file_ids.append(file[1])
                     request.session['file_list'] = file_list
                     print(file_list,"filelist")
-                            
-                            # print(file_list,"file_list")
-                            
                     request.session['file_ids'] = file_ids
                     
-                    # print(f"File added: {file_path}")
-                # else:
-                #     print(f"File not found: {file_path}")
-               
-
             if not file_list:
                 print("No valid files found in the project directory")
             print(file_list,"ok!!!!!!!!!!!!")
@@ -860,7 +837,7 @@ def delete_file(request, filename):
 
 
 
-# # old end    
+   
 
 
 def insert_extracted_data_into_db(dataframe, nUserID, cProjectName):
@@ -879,7 +856,6 @@ def insert_extracted_data_into_db(dataframe, nUserID, cProjectName):
         
         with connection.cursor() as cursor:
             for index, row in dataframe.iterrows():
-                # Extract values from the row
                 nKeywordID = row['Keyword ID']
                 nFileNameID = row['PDF Number']
                 nPageNumber = row['Page']
@@ -1090,7 +1066,6 @@ def keywords(request, cProjectName):
     })
 
 
-    # keyword original
     
 def fetch_training_data(request,selected_keywords, selected_files, nProjectID):
     """
@@ -1151,7 +1126,7 @@ def fetch_training_data(request,selected_keywords, selected_files, nProjectID):
 
 
 def store_value(request, id, value,cProjectName):
-    # cDataValuesList = request.session.get('cDataValuesList', [])
+    
     nUserID = request.session.get('nUserID')
     print(nUserID,"nUserID")
     nProjectID = GetProjectID(cProjectName, nUserID)
@@ -1174,7 +1149,7 @@ def store_value(request, id, value,cProjectName):
                
     except Exception as e:
         print(f"Database error: {e}")
-        messages.error(request, '')
+        messages.error(request, 'There was an error fetching your username. Please try again.')
     try:
         with connection.cursor() as cursor:
             # Fetch project ID to verify the project exists for this user
@@ -1187,7 +1162,7 @@ def store_value(request, id, value,cProjectName):
             
     except Exception as e:
         print(f"Database error: {e}")
-        messages.error(request, '')
+        messages.error(request, 'There was an error fetching your username. Please try again.')
     # Fetch all corresponding details from the database
     try:
         with connection.cursor() as cursor:
@@ -1243,18 +1218,18 @@ def store_value(request, id, value,cProjectName):
                         get_all_dbvalues=get_all_dbvalue(alldata_with_path)
                         # print(get_all_dbvalues,"get_all_dbvalues")
                         process_pdf_highlightings=process_pdf_highlighting(alldata_with_path,ProjectFolder)
+                        # print(process_pdf_highlightings,"process_pdf_highlightingsprocess_pdf_highlightings")
+                        save_and_open_temp_pdfs=save_and_open_temp_pdf(full_path,nPageNumber)
+                    
             except Exception as e:
                 print("Error:", str(e))    
-               
-            # return redirect('filekeyword')
-            
-
     except Exception as e:
         print("ghvghvgcvg")
     
     # Return or redirect to a different view
     print("Processing completed.")
     return redirect('filekeyword', cProjectName=cProjectName)
+    return render(request,'files.html')
 
 
 
