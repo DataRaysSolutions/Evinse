@@ -75,8 +75,15 @@ WSGI_APPLICATION = 'Evinse.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mssql',
+        'NAME': 'Evinse',
+        'USER': 'sa',
+        'PASSWORD': 'DataRays123#',
+        'HOST': 'DATARAYS2',
+        'PORT': '',
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server'
+        },
     }
 }
 

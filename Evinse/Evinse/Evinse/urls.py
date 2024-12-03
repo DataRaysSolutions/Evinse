@@ -21,3 +21,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('EvinseApp.urls')),
 ]
+
+
+# echo "# Evinse" >> README.md
+# git init
+# git add README.md
+# git commit -m "first commit"
+# git branch -M main
+# git remote add origin https://github.com/DataRaysSolutions/Evinse.git
+# git push -u origin main
